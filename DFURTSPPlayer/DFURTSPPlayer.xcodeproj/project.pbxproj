@@ -36,6 +36,7 @@
 		0649ABDD16E93103001323D2 /* RTSPPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0649ABDA16E93103001323D2 /* RTSPPlayer.m */; };
 		0649ABDF16E93112001323D2 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0649ABDE16E93112001323D2 /* AudioToolbox.framework */; };
 		0649ABE116E93227001323D2 /* sophie.mov in Resources */ = {isa = PBXBuildFile; fileRef = 0649ABE016E93227001323D2 /* sophie.mov */; };
+		21240C3E1CE380AD00850FFE /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 21240C3D1CE380AD00850FFE /* VideoToolbox.framework */; };
 		75601E3E1AB9FC3400C57B81 /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0649ABAF16E928BA001323D2 /* libavcodec.a */; };
 		75601E3F1AB9FC3400C57B81 /* libavdevice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0649ABB016E928BA001323D2 /* libavdevice.a */; };
 		75601E401AB9FC3400C57B81 /* libavfilter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0649ABB116E928BA001323D2 /* libavfilter.a */; };
@@ -177,6 +178,7 @@
 		0649ABDA16E93103001323D2 /* RTSPPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RTSPPlayer.m; sourceTree = "<group>"; };
 		0649ABDE16E93112001323D2 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		0649ABE016E93227001323D2 /* sophie.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = sophie.mov; sourceTree = "<group>"; };
+		21240C3D1CE380AD00850FFE /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
 		75601E451ABA00DF00C57B81 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -185,6 +187,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				21240C3E1CE380AD00850FFE /* VideoToolbox.framework in Frameworks */,
 				75601E461ABA00DF00C57B81 /* libiconv.dylib in Frameworks */,
 				75601E3E1AB9FC3400C57B81 /* libavcodec.a in Frameworks */,
 				75601E3F1AB9FC3400C57B81 /* libavdevice.a in Frameworks */,
@@ -242,6 +245,7 @@
 		0649AB1216E9200D001323D2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				21240C3D1CE380AD00850FFE /* VideoToolbox.framework */,
 				75601E451ABA00DF00C57B81 /* libiconv.dylib */,
 				0649ABC116E928E6001323D2 /* libz.dylib */,
 				0649ABBF16E928DF001323D2 /* libbz2.dylib */,
@@ -553,7 +557,8 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = DFU;
-				LastUpgradeCheck = 0460;
+				LastTestingUpgradeCheck = 0730;
+				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = "Bogdan Furdui";
 			};
 			buildConfigurationList = 0649AB0B16E9200D001323D2 /* Build configuration list for PBXProject "DFURTSPPlayer" */;
@@ -698,6 +703,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -745,6 +751,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DFURTSPPlayer/DFURTSPPlayer-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -761,6 +768,7 @@
 					"-all_load",
 					"-Objc",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.clujtech.ro.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
@@ -771,6 +779,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DFURTSPPlayer/DFURTSPPlayer-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -787,6 +796,7 @@
 					"-all_load",
 					"-Objc",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.clujtech.ro.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				USER_HEADER_SEARCH_PATHS = "";
 				WRAPPER_EXTENSION = app;
@@ -804,6 +814,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DFURTSPPlayer/DFURTSPPlayer-Prefix.pch";
 				INFOPLIST_FILE = "DFURTSPPlayerTests/DFURTSPPlayerTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.clujtech.ro.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
@@ -821,6 +832,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DFURTSPPlayer/DFURTSPPlayer-Prefix.pch";
 				INFOPLIST_FILE = "DFURTSPPlayerTests/DFURTSPPlayerTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.clujtech.ro.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;

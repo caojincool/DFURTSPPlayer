@@ -11,21 +11,15 @@
 
 @implementation DFUAppDelegate
 
-- (void)dealloc
-{
-    [_window release];
-    [_viewController release];
-    [super dealloc];
-}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        self.viewController = [[[DFUViewController alloc] initWithNibName:@"DFUViewController_iPhone" bundle:nil] autorelease];
+        self.viewController = [[DFUViewController alloc] initWithNibName:@"DFUViewController_iPhone" bundle:nil];
     } else {
-        self.viewController = [[[DFUViewController alloc] initWithNibName:@"DFUViewController_iPad" bundle:nil] autorelease];
+        self.viewController = [[DFUViewController alloc] initWithNibName:@"DFUViewController_iPad" bundle:nil];
     }
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];

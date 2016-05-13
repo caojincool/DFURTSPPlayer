@@ -35,7 +35,7 @@
 }
 
 /* Last decoded picture as UIImage */
-@property (nonatomic, readonly) UIImage *currentImage;
+@property (weak, nonatomic, readonly) UIImage *currentImage;
 
 /* Size of video frame */
 @property (nonatomic, readonly) int sourceWidth, sourceHeight;
@@ -49,7 +49,7 @@
 /* Current time of video in seconds */
 @property (nonatomic, readonly) double currentTime;
 
-@property (nonatomic, retain) NSMutableArray *audioPacketQueue;
+@property (nonatomic, strong) NSMutableArray *audioPacketQueue;
 @property (nonatomic, assign) AVCodecContext *_audioCodecContext;
 @property (nonatomic, assign) AudioQueueBufferRef emptyAudioBuffer;
 @property (nonatomic, assign) int audioPacketQueueSize;

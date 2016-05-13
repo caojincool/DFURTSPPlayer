@@ -19,10 +19,10 @@
 	float lastFrameTime;
 }
 
-@property (nonatomic, retain) IBOutlet UIImageView *imageView;
-@property (nonatomic, retain) IBOutlet UILabel *label;
-@property (nonatomic, retain) IBOutlet UIButton *playButton;
-@property (nonatomic, retain) RTSPPlayer *video;
+@property (nonatomic, strong) IBOutlet UIImageView *imageView;
+@property (nonatomic, strong) IBOutlet UILabel *label;
+@property (nonatomic, strong) IBOutlet UIButton *playButton;
+@property (nonatomic, strong) RTSPPlayer *video;
 
 - (IBAction)playButtonAction:(id)sender;
 - (IBAction)showTime:(id)sender;

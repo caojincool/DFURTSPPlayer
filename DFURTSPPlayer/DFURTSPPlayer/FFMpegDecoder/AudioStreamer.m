@@ -3,6 +3,7 @@
 
 void audioQueueOutputCallback(void *inClientData, AudioQueueRef inAQ,
   AudioQueueBufferRef inBuffer);
+
 void audioQueueIsRunningCallback(void *inClientData, AudioQueueRef inAQ,
   AudioQueuePropertyID inID);
 
@@ -21,7 +22,7 @@ void audioQueueIsRunningCallback(void *inClientData, AudioQueueRef inAQ,
 }
 
 @interface AudioStreamer ()
-@property (nonatomic, assign) RTSPPlayer *streamer;
+@property (nonatomic, weak) RTSPPlayer *streamer;
 @property (nonatomic, assign) AVCodecContext *audioCodecContext;
 @end
 
@@ -41,6 +42,10 @@ void audioQueueIsRunningCallback(void *inClientData, AudioQueueRef inAQ,
     return  self;
 }
 
+- (void)dealloc
+{
+    [self removeAudioQueue];
+}
 
 - (IBAction)playAudio:(UIButton*)sender
 {
@@ -106,32 +111,30 @@ void audioQueueIsRunningCallback(void *inClientData, AudioQueueRef inAQ,
     audioStreamBasicDesc_.mFormatFlags = 0;
     
     switch (_audioCodecContext->codec_id) {
-        case CODEC_ID_MP3:
+        case AV_CODEC_ID_MP3:
         {
             audioStreamBasicDesc_.mFormatID = kAudioFormatMPEGLayer3;
             break;
         }
-        case CODEC_ID_AAC:
+        case AV_CODEC_ID_AAC:
         {
             audioStreamBasicDesc_.mFormatID = kAudioFormatMPEG4AAC;
             audioStreamBasicDesc_.mFormatFlags = kMPEG4Object_AAC_LC;
-            audioStreamBasicDesc_.mSampleRate = _audioCodecContext->sample_rate;
-            audioStreamBasicDesc_.mChannelsPerFrame = _audioCodecContext->channels;
+            audioStreamBasicDesc_.mSampleRate = 44100;
+            audioStreamBasicDesc_.mChannelsPerFrame = 2;
             audioStreamBasicDesc_.mBitsPerChannel = 0;
-            audioStreamBasicDesc_.mFramesPerPacket =_audioCodecContext->frame_size;
+            audioStreamBasicDesc_.mFramesPerPacket = 1024;
             audioStreamBasicDesc_.mBytesPerPacket = 0;
-            audioStreamBasicDesc_.mBytesPerFrame = _audioCodecContext->frame_bits;
-            audioStreamBasicDesc_.mReserved = 0;
             NSLog(@"audio format %s (%d) is  supported",  _audioCodecContext->codec_descriptor->name, _audioCodecContext->codec_id);
             
             break;
         }
-        case CODEC_ID_AC3:
+        case AV_CODEC_ID_AC3:
         {
             audioStreamBasicDesc_.mFormatID = kAudioFormatAC3;
             break;
         }
-        case CODEC_ID_PCM_MULAW:
+        case AV_CODEC_ID_PCM_MULAW:
         {
             audioStreamBasicDesc_.mFormatID = kAudioFormatULaw;
             audioStreamBasicDesc_.mSampleRate = 8000.0;
@@ -152,13 +155,13 @@ void audioQueueIsRunningCallback(void *inClientData, AudioQueueRef inAQ,
         }
     }
     
-//    if (audioStreamBasicDesc_.mFormatID != kAudioFormatULaw) {
-//        audioStreamBasicDesc_.mBytesPerPacket = 0;
-//        audioStreamBasicDesc_.mFramesPerPacket = _audioCodecContext->frame_size;
-//        audioStreamBasicDesc_.mBytesPerFrame = 0;
-//        audioStreamBasicDesc_.mChannelsPerFrame = _audioCodecContext->channels;
-//        audioStreamBasicDesc_.mBitsPerChannel = 0;        
-//    }
+    if (audioStreamBasicDesc_.mFormatID != kAudioFormatULaw) {
+        audioStreamBasicDesc_.mBytesPerPacket = 0;
+        audioStreamBasicDesc_.mFramesPerPacket = _audioCodecContext->frame_size;
+        audioStreamBasicDesc_.mBytesPerFrame = 0;
+        audioStreamBasicDesc_.mChannelsPerFrame = _audioCodecContext->channels;
+        audioStreamBasicDesc_.mBitsPerChannel = 0;        
+    }
     
     OSStatus status = AudioQueueNewOutput(&audioStreamBasicDesc_, audioQueueOutputCallback, (__bridge void*)self, NULL, NULL, 0, &audioQueue_);
     if (status != noErr) {
@@ -238,7 +241,7 @@ void audioQueueIsRunningCallback(void *inClientData, AudioQueueRef inAQ,
             _streamer.emptyAudioBuffer = buffer;
             return status;
         }
-
+        
         _streamer.emptyAudioBuffer = nil;
         
         while (_streamer.audioPacketQueue.count && buffer->mPacketDescriptionCount < buffer->mPacketDescriptionCapacity) {
@@ -260,18 +263,25 @@ void audioQueueIsRunningCallback(void *inClientData, AudioQueueRef inAQ,
                 
                 
                 _streamer.audioPacketQueueSize -= packet->size;
-                            
-                av_free_packet(packet);
+          //      NSData *data = [NSMutableData dataWithBytes:packet->buf->data length:packet->buf->size];
+                //if (packet->buf) {
+                //    NSLog(@"data = %d, audioPacketQueueSize %d", packet->buf->size, _streamer.audioPacketQueueSize);
+                    
+                    av_packet_unref(packet);
+//                }
+
+
             }
             else {
                 break;
             }
+
         }
         
         [decodeLock_ lock];
         if (buffer->mPacketDescriptionCount > 0) {
             status = AudioQueueEnqueueBuffer(audioQueue_, buffer, 0, NULL);
-            if (status != noErr) { 
+            if (status != noErr) {
                 NSLog(@"Could not enqueue buffer.");
             }
         } else {
